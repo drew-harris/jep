@@ -2,7 +2,7 @@ import { game, resetGame } from "./state";
 import type { Message, MessageType } from "./types";
 
 type SpecificMessageHandler<T extends MessageType> = (
-  data: Message<T>["data"], // The message type is now specifically Message<T>
+  data: Message<T>["data"],
   broadcast: <B extends MessageType>(
     type: B,
     data: Message<B>["data"],

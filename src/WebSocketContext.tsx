@@ -22,7 +22,7 @@ interface WebSocketContextType {
   addMessageListener: (
     type: string | null,
     callback: MessageListenerCallback | GenericMessageListenerCallback<any>,
-  ) => () => void; // Returns an unsubscribe function
+  ) => () => void;
   isConnected: boolean;
 }
 
@@ -30,14 +30,12 @@ const WebSocketContext = createContext<WebSocketContextType | undefined>(
   undefined,
 );
 
-// --- Provider Props ---
 interface WebSocketProviderProps {
   url: string;
   reconnectInterval?: number; // in milliseconds
   children: ReactNode;
 }
 
-// --- Provider Component ---
 export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
   url,
   reconnectInterval = 5000,
@@ -47,7 +45,6 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
   const socketRef = useRef<WebSocket | null>(null);
   const reconnectTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Store listeners: key is message type (or a special key for "all"), value is a Set of callbacks
   const listenersRef = useRef<
     Map<
       string | null,
@@ -77,7 +74,6 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
         clearTimeout(reconnectTimerRef.current);
         reconnectTimerRef.current = null;
       }
-      // Optionally, send queued messages here if you implement a queue
     };
 
     ws.onmessage = (event) => {
@@ -85,7 +81,6 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
         const message: Message<any> = JSON.parse(event.data as string);
         console.log("WebSocket message received:", message);
 
-        // Notify generic listeners (listening to all messages)
         const genericListeners = listenersRef.current.get(null);
         if (genericListeners) {
           genericListeners.forEach((callback) =>
@@ -93,7 +88,6 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
           );
         }
 
-        // Notify type-specific listeners
         const specificListeners = listenersRef.current.get(message.type);
         if (specificListeners) {
           specificListeners.forEach((callback) =>
@@ -111,7 +105,6 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
 
     ws.onerror = (error) => {
       console.error("WebSocket error:", error);
-      // ws.close() will be called automatically by the browser, triggering onclose
     };
 
     ws.onclose = (event) => {
@@ -121,7 +114,6 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
       setIsConnected(false);
       socketRef.current = null; // Clear the ref
       if (!reconnectTimerRef.current) {
-        // Avoid multiple timers
         console.log(
           `Attempting to reconnect in ${reconnectInterval / 1000}s...`,
         );
@@ -139,12 +131,12 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
       }
       if (socketRef.current) {
         console.log("Closing WebSocket connection on component unmount.");
-        socketRef.current.close(1000, "Component unmounting"); // 1000 is normal closure
+        socketRef.current.close(1000, "Component unmounting");
         socketRef.current = null;
       }
-      listenersRef.current.clear(); // Clear listeners on unmount
+      listenersRef.current.clear();
     };
-  }, [connect]); // Re-run effect if `connect` (and thus `url` or `reconnectInterval`) changes
+  }, [connect]);
 
   const sendMessage = useCallback(
     <T extends MessageType>(type: T, data: Message<T>["data"]) => {
@@ -163,11 +155,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
           console.error("Failed to send WebSocket message:", error);
         }
       } else {
-        console.warn(
-          "WebSocket not connected. Message not sent:",
-          data,
-          // You could implement a message queue here
-        );
+        console.warn("WebSocket not connected. Message not sent:", data);
       }
     },
     [],
@@ -175,7 +163,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
 
   const addMessageListener = useCallback(
     (
-      type: string | null, // null for generic listener
+      type: string | null,
       callback: MessageListenerCallback | GenericMessageListenerCallback<any>,
     ) => {
       if (!listenersRef.current.has(type)) {
@@ -183,7 +171,6 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
       }
       listenersRef.current.get(type)!.add(callback);
 
-      // Return an unsubscribe function
       return () => {
         const listeners = listenersRef.current.get(type);
         if (listeners) {
@@ -211,8 +198,8 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
 };
 type SubscribeCallback<T extends MessageType | undefined> =
   T extends MessageType
-    ? GenericMessageListenerCallback<T> // If T is a specific type, expect a specific listener
-    : MessageListenerCallback; // If T is undefined, expect a generic listener (can refine 'any' if context types are more specific)
+    ? GenericMessageListenerCallback<T>
+    : MessageListenerCallback;
 
 export const useSubscribe = <T extends MessageType | undefined>(
   messageType: T, // If null or undefined, listens to all messages
@@ -228,42 +215,26 @@ export const useSubscribe = <T extends MessageType | undefined>(
   useEffect(() => {
     let unsubscribe: (() => void) | undefined;
 
-    // Only subscribe if a callback is provided
     if (callback) {
-      // If messageType is undefined, treat it as null for a generic listener
       const typeToListen = messageType === undefined ? null : messageType;
 
-      // Add the message listener and store the unsubscribe function
-      // Casting to 'any' might be necessary here depending on the exact signature of addMessageListener
-      // and how SubscribeCallback aligns with it. Ideally, types are perfect.
       unsubscribe = addMessageListener(typeToListen, callback as any);
     }
 
-    // Cleanup function: unsubscribe when the component unmounts or dependencies change
     return () => {
       if (unsubscribe) {
         unsubscribe();
       }
     };
-
-    // Re-subscribe if addMessageListener function, messageType, or the callback changes
   }, [addMessageListener, messageType, callback]);
-
-  // This hook doesn't return anything related to sending or connection status
 };
-
-// --- Send Hook ---
 export const useSend = () => {
   const context = useContext(WebSocketContext);
   if (!context) {
     throw new Error("useSend must be used within a WebSocketProvider");
   }
 
-  // Extract only sendMessage and isConnected from the context
   const { sendMessage, isConnected } = context;
-
-  // This hook doesn't manage any subscriptions, so no useEffect for listeners is needed here
 
   return { sendMessage, isConnected };
 };
-// --- Custom Hook ---

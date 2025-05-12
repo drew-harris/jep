@@ -3,6 +3,7 @@ import type { Question } from "./state";
 import { questions } from "./questions";
 import { useSend, useSubscribe } from "./WebSocketContext";
 import { useNavigate } from "react-router";
+import { useGameState } from "./ClientGameState";
 
 // Type for the transformed data
 type CategoryMap = {
@@ -31,12 +32,18 @@ const QuestionCell: React.FC<QuestionCellProps> = ({
   question,
   onQuestionClick,
 }) => {
+  const gameState = useGameState();
+
   return (
     <div
       style={{
         border: "1px solid black",
         padding: "10px",
         textAlign: "center",
+        opacity: gameState.playedQuestions.includes(question.id) ? 0.3 : 1,
+        filter: gameState.playedQuestions.includes(question.id)
+          ? "grayscale(1)"
+          : "none",
         cursor: "pointer",
         backgroundColor: question.isAnswered ? "gray" : "blue",
         color: "white",
@@ -88,16 +95,10 @@ export const Board: React.FC = () => {
   const groupedQuestions = groupQuestionsByCategory(questions);
 
   const { sendMessage } = useSend();
-  const navigate = useNavigate();
 
   const handleQuestionClick = (question: Question) => {
     sendMessage("setViewingQuestion", { question });
-    navigate("/app/question/" + question.id);
   };
-
-  useSubscribe("setViewingQuestion", (q) => {
-    navigate("/app/question/" + q.question.id);
-  });
 
   return (
     <div style={{ display: "flex" }}>

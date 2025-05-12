@@ -15,11 +15,13 @@ export type GameState = {
   currentQuestion: Question | null;
   scores: Record<string, number>;
   count: number;
+  playedQuestions: string[];
 };
 
 const initialState: GameState = {
   currentQuestion: null,
   scores: {},
+  playedQuestions: [],
   count: 0,
 };
 

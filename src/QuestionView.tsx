@@ -1,12 +1,25 @@
-import { questions } from "./questions";
-import { useParams } from "react-router";
+import { useGameState } from "./ClientGameState";
 
 export const QuestionView = () => {
-  const { id } = useParams();
-  const question = questions.find((q) => q.id === id);
+  const { currentQuestion } = useGameState();
+  if (!currentQuestion) {
+    return;
+  }
+
   return (
     <div>
-      <div>{JSON.stringify(question)}</div>
+      <div className="text-center">For {currentQuestion.worth} points</div>
+      <div className="text-3xl text-center py-9">
+        {currentQuestion.questionText}
+      </div>
+      {currentQuestion.isAnswered && (
+        <>
+          <hr />
+          <div className="text-center text-3xl py-9">
+            {currentQuestion.answerText}
+          </div>
+        </>
+      )}
     </div>
   );
 };

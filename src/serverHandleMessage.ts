@@ -19,23 +19,39 @@ type HandlersMap = {
 export const handlers: Partial<HandlersMap> = {
   sync: (m, b) => {
     // Sync to to others (rare)
-    b("sync", game.getState());
+    // happens after handler
   },
   reset: (m, b) => {
     resetGame();
-    b("sync", game.getState(), true);
+  },
+  revealAnswer: (m, b) => {
+    const state = game.getState();
+    if (!state.currentQuestion) {
+      return;
+    }
+    game.setState({
+      ...state,
+      currentQuestion: {
+        ...state.currentQuestion,
+        isAnswered: true,
+      },
+      playedQuestions: [...state.playedQuestions, state.currentQuestion.id],
+    });
+  },
+  unsetQuestion: (m, b) => {
+    game.setState((state) => ({
+      currentQuestion: null,
+    }));
   },
   incrementCount: (m, b) => {
     game.setState((state) => ({
       count: state.count + 1,
     }));
-    b("sync", game.getState(), true);
   },
   setViewingQuestion: (m, b, spread) => {
     spread();
     game.setState(() => ({
       currentQuestion: m.question,
     }));
-    b("sync", game.getState(), true);
   },
 };

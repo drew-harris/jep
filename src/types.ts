@@ -5,7 +5,9 @@ export type MessageTypes = {
   setViewingQuestion: {
     question: Question;
   };
+  unsetQuestion: {};
   incrementCount: {};
+  revealAnswer: {};
 
   sync: GameState;
 };

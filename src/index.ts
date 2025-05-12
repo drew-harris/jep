@@ -71,6 +71,7 @@ const server = serve({
       handler(parsedJson.data, broadcast, spread, ws);
 
       // Push state eventually?
+      broadcast("sync", game.getState(), true);
     },
   },
   routes: {

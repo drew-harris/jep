@@ -6,6 +6,8 @@ import { Buzzer } from "./Buzzer";
 import { WebSocketProvider } from "./WebSocketContext";
 import { ClientGameStateProvider } from "./ClientGameState";
 import { App } from "./App";
+import { Board } from "./Board";
+import { QuestionView } from "./QuestionView";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +19,14 @@ const router = createBrowserRouter([
   {
     path: "/app",
     element: <App></App>,
+  },
+  {
+    path: "/app/board",
+    element: <Board />,
+  },
+  {
+    path: "/app/question/:id",
+    element: <QuestionView />,
   },
   {
     path: "/",

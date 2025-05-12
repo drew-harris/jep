@@ -1,10 +1,13 @@
 import { create } from "zustand";
 
-type Question = {
+export type Category = "Early Life" | "Music";
+
+export type Question = {
+  id: string;
   worth: number;
   questionText: string;
   answerText: string;
-  category: string;
+  category: Category;
   isAnswered: boolean;
 };
 

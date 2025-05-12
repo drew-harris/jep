@@ -8,6 +8,7 @@ type SpecificMessageHandler<T extends MessageType> = (
     data: Message<B>["data"],
     inclusive?: true,
   ) => void,
+  spread: () => void,
   socket: Bun.ServerWebSocket<unknown>,
 ) => void;
 
@@ -16,11 +17,9 @@ type HandlersMap = {
 };
 
 export const handlers: Partial<HandlersMap> = {
-  buzzAccept: (m, b) => {
-    console.log("buzzAccept", m);
-    setTimeout(() => {
-      b("join", { name: "drew" });
-    }, 4000);
+  sync: (m, b) => {
+    // Sync to to others (rare)
+    b("sync", game.getState());
   },
   reset: (m, b) => {
     resetGame();
@@ -29,6 +28,13 @@ export const handlers: Partial<HandlersMap> = {
   incrementCount: (m, b) => {
     game.setState((state) => ({
       count: state.count + 1,
+    }));
+    b("sync", game.getState(), true);
+  },
+  setViewingQuestion: (m, b, spread) => {
+    spread();
+    game.setState(() => ({
+      currentQuestion: m.question,
     }));
     b("sync", game.getState(), true);
   },

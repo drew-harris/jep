@@ -25,8 +25,6 @@ const server = serve({
       console.log(`Client disconnected: ${code} ${reason}`);
     },
     async message(ws, message) {
-      console.log(`Received ${message}`);
-
       // Handle message
       if (typeof message !== "string") {
         return;
@@ -60,8 +58,17 @@ const server = serve({
         });
       };
 
+      // Send the message to everyone else
+      const spread = () => {
+        wsClients.forEach((client) => {
+          if (client !== ws) {
+            client.send(message);
+          }
+        });
+      };
+
       // Call handler
-      handler(parsedJson.data, broadcast, ws);
+      handler(parsedJson.data, broadcast, spread, ws);
 
       // Push state eventually?
     },

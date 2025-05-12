@@ -1,23 +1,10 @@
-import type { GameState } from "./state";
+import type { GameState, Question } from "./state";
 
 export type MessageTypes = {
-  join: {
-    name: string;
-  };
-
-  leave: {
-    name: string;
-  };
-
-  testBuzzStart: {
-    teamName: string;
-  };
-
-  buzzAccept: {
-    teamName: string;
-  };
-
   reset: {};
+  setViewingQuestion: {
+    question: Question;
+  };
   incrementCount: {};
 
   sync: GameState;

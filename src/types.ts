@@ -1,3 +1,5 @@
+import type { GameState } from "./state";
+
 export type MessageTypes = {
   join: {
     name: string;
@@ -14,6 +16,11 @@ export type MessageTypes = {
   buzzAccept: {
     teamName: string;
   };
+
+  reset: {};
+  incrementCount: {};
+
+  sync: GameState;
 };
 
 export type MessageType = keyof MessageTypes;

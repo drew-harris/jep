@@ -2,6 +2,7 @@ import indexHtml from "../public/index.html";
 import { serve } from "bun";
 import type { Message, MessageType } from "./types";
 import { handlers } from "./serverHandleMessage";
+import { game } from "./state";
 
 const wsClients: Bun.ServerWebSocket<unknown>[] = [];
 
@@ -10,6 +11,14 @@ const server = serve({
     open(ws) {
       wsClients.push(ws);
       console.info(`Client connected`);
+
+      // send a sync message
+      ws.send(
+        JSON.stringify({
+          type: "sync",
+          data: game.getState(),
+        }),
+      );
     },
     close(ws, code, reason) {
       wsClients.splice(wsClients.indexOf(ws), 1);

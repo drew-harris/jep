@@ -1,3 +1,4 @@
+import { game, resetGame } from "./state";
 import type { Message, MessageType } from "./types";
 
 type SpecificMessageHandler<T extends MessageType> = (
@@ -20,5 +21,15 @@ export const handlers: Partial<HandlersMap> = {
     setTimeout(() => {
       b("join", { name: "drew" });
     }, 4000);
+  },
+  reset: (m, b) => {
+    resetGame();
+    b("sync", game.getState(), true);
+  },
+  incrementCount: (m, b) => {
+    game.setState((state) => ({
+      count: state.count + 1,
+    }));
+    b("sync", game.getState(), true);
   },
 };

@@ -1,3 +1,4 @@
+import { useGameState } from "./ClientGameState";
 import { useSubscribe, useSend } from "./WebSocketContext";
 
 export const Buzzer = () => {
@@ -6,11 +7,13 @@ export const Buzzer = () => {
   });
 
   const { sendMessage } = useSend();
+  const gameState = useGameState();
 
   return (
     <div>
-      <div>This is the buzzer</div>
-      <button onClick={() => sendMessage("buzzAccept", { teamName: "test" })}>
+      <div>WElcome</div>
+      <div>Count: {gameState.count}</div>
+      <button onClick={() => sendMessage("incrementCount", {})}>
         Send Message
       </button>
     </div>

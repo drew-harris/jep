@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Buzzer } from "./Buzzer";
 import { WebSocketProvider } from "./WebSocketContext";
+import { ClientGameStateProvider } from "./ClientGameState";
 
 const queryClient = new QueryClient();
 
@@ -23,7 +24,9 @@ document.addEventListener("DOMContentLoaded", () => {
   root.render(
     <QueryClientProvider client={queryClient}>
       <WebSocketProvider url="/ws">
-        <RouterProvider router={router} />
+        <ClientGameStateProvider>
+          <RouterProvider router={router} />
+        </ClientGameStateProvider>
       </WebSocketProvider>
     </QueryClientProvider>,
   );

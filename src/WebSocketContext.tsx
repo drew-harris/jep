@@ -9,9 +9,9 @@ import React, {
 } from "react";
 import type { Message, MessageType } from "./types";
 
-type MessageListenerCallback = (data: any) => void;
+type MessageListenerCallback = (message: Message<any>) => void;
 type GenericMessageListenerCallback<T extends MessageType> = (
-  message: Message<T>,
+  data: Message<T>["data"],
 ) => void;
 
 interface WebSocketContextType {

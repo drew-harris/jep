@@ -1,5 +1,21 @@
 import { Board } from "./Board";
+import { useGameState } from "./ClientGameState";
 import { useSend } from "./WebSocketContext";
+
+const Scores = () => {
+  const state = useGameState();
+  return (
+    <div className="flex gap-2 justify-evenly">
+      {Object.entries(state.scores).map((e) => {
+        return (
+          <div>
+            {e[0]}: {e[1]}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
 
 export const Admin = () => {
   const { sendMessage } = useSend();
@@ -37,6 +53,7 @@ export const Admin = () => {
       </div>
       <div className="py-2"></div>
       <Board />
+      <Scores />
     </div>
   );
 };

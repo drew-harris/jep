@@ -22,17 +22,21 @@ export const TeamContextProvider = ({
   }, [gameState, inputTeam]);
   const { sendMessage } = useSend();
 
-  const submit = () => {
-    setTeam(inputTeam);
-    sendMessage("signUp", { teamName: inputTeam });
-    window.localStorage.setItem("teamname", inputTeam);
+  const submit = (name: string) => {
+    if (name === "") {
+      alert("team name required");
+      return;
+    }
+    setTeam(name);
+    sendMessage("signUp", { teamName: name });
+    window.localStorage.setItem("teamname", name);
   };
 
   useEffect(() => {
     const potentialSave = window.localStorage.getItem("teamname");
     if (potentialSave) {
       setInputTeam(potentialSave);
-      setTimeout(submit, 100);
+      submit(potentialSave);
     }
   }, []);
 
@@ -47,11 +51,11 @@ export const TeamContextProvider = ({
         />
         <button
           onClick={() => {
-            submit();
+            submit(inputTeam);
           }}
           className="text-lg border-yellow-100 border w-full py-2"
         >
-          Set Team
+          JOIN
         </button>
       </div>
     );

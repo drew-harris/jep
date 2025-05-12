@@ -8,7 +8,9 @@ const BuzzerCurrentQuestion = () => {
     return;
   }
 
-  return <div>{state.currentQuestion.questionText}</div>;
+  return (
+    <div className="text-center pt-2">{state.currentQuestion.questionText}</div>
+  );
 };
 
 export const Buzzer = () => {

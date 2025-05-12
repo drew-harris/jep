@@ -54,4 +54,18 @@ export const handlers: Partial<HandlersMap> = {
       currentQuestion: m.question,
     }));
   },
+
+  signUp: (m, b) => {
+    // double check that team doesn't exist
+    const state = game.getState();
+    if (state.scores[m.teamName]) {
+      return;
+    }
+    game.setState((state) => ({
+      scores: {
+        ...state.scores,
+        [m.teamName]: 0,
+      },
+    }));
+  },
 };

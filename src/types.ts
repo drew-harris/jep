@@ -8,6 +8,9 @@ export type MessageTypes = {
   unsetQuestion: {};
   incrementCount: {};
   revealAnswer: {};
+  signUp: {
+    teamName: string;
+  };
 
   sync: GameState;
 };

@@ -8,13 +8,18 @@ import { ClientGameStateProvider } from "./ClientGameState";
 import { App } from "./App";
 import { Presentation } from "./Presentation";
 import { Admin } from "./Admin";
+import { TeamContextProvider } from "./TeamContext";
 
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
     path: "/app/buzzer",
-    element: <Buzzer />,
+    element: (
+      <TeamContextProvider>
+        <Buzzer />
+      </TeamContextProvider>
+    ),
   },
   {
     path: "/app",

@@ -1,17 +1,26 @@
 import { useGameState } from "./ClientGameState";
+import { useTeamName } from "./TeamContext";
 import { useSend } from "./WebSocketContext";
+
+const BuzzerCurrentQuestion = () => {
+  const state = useGameState();
+  if (!state.currentQuestion) {
+    return;
+  }
+
+  return <div>{state.currentQuestion.questionText}</div>;
+};
 
 export const Buzzer = () => {
   const { sendMessage } = useSend();
   const gameState = useGameState();
+  const teamName = useTeamName();
 
   return (
     <div>
-      <div className="w-full text-3xl text-center">BUZZER</div>
-      <div>Count: {gameState.count}</div>
-      <button onClick={() => sendMessage("incrementCount", {})}>
-        Send Message
-      </button>
+      <div className="text-center">Team: {teamName}</div>
+      <div className="text-center">Score: {gameState.scores[teamName]}</div>
+      <BuzzerCurrentQuestion />
     </div>
   );
 };

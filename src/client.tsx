@@ -1,21 +1,27 @@
 import "./styles.css";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Buzzer } from "./Buzzer";
 import { WebSocketProvider } from "./WebSocketContext";
 import { ClientGameStateProvider } from "./ClientGameState";
+import { App } from "./App";
 
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <div>Hello World</div>,
+    path: "/app/buzzer",
+    element: <Buzzer />,
   },
   {
-    path: "/buzzer",
-    element: <Buzzer />,
+    path: "/app",
+    element: <App></App>,
+  },
+  {
+    path: "/",
+    // Redirect to /app
+    element: <Navigate to="/app" />,
   },
 ]);
 

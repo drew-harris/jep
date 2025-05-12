@@ -68,6 +68,7 @@ const server = serve({
   },
   routes: {
     "/": indexHtml,
+    "/app": indexHtml,
     "/ws": (req, server) => {
       const success = server.upgrade(req);
       if (success) {
@@ -79,7 +80,7 @@ const server = serve({
       // handle HTTP request normally
       return new Response("Hello world!");
     },
-    "/buzzer": indexHtml,
+    "/app/*": indexHtml,
     "/hello": async () => {},
   },
   port: 3000,

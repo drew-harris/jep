@@ -1,7 +1,11 @@
+import { QRCodeSVG } from "qrcode.react";
 export const App = () => {
   return (
-    <div>
-      <div className="bg-red-500">app</div>
+    <div className="grid place-items-center min-h-[80vh]">
+      <div className="font-italic text-[99px]">Drewpardy!</div>
+      <div style={{ background: "white", padding: "16px" }}>
+        <QRCodeSVG size={200} value={window.location.toString() + "/buzzer"} />
+      </div>
     </div>
   );
 };

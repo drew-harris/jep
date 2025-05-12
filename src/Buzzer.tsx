@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { useGameState } from "./ClientGameState";
 import { useTeamName } from "./TeamContext";
-import { useSend } from "./WebSocketContext";
+import { useSend, useSubscribe } from "./WebSocketContext";
+import { game } from "./state";
 
 const BuzzerCurrentQuestion = () => {
   const state = useGameState();
@@ -23,6 +25,16 @@ export const Buzzer = () => {
       <div className="text-center">Team: {teamName}</div>
       <div className="text-center">Score: {gameState.scores[teamName]}</div>
       <BuzzerCurrentQuestion />
+      {gameState.allowBuzz && (
+        <div
+          onClick={() => {
+            sendMessage("buzzIn", { teamName });
+          }}
+          className="rounded-[100%] mx-auto mt-4 grid place-items-center h-[50vw] text-center bg-red-500 w-[50vw]"
+        >
+          <div className="text-3xl">Buzz</div>
+        </div>
+      )}
     </div>
   );
 };

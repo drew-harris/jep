@@ -12,6 +12,10 @@ export type MessageTypes = {
     teamName: string;
   };
 
+  allowBuzz: { allowed: boolean };
+  buzzAccepted: { teamName: string };
+  buzzIn: { teamName: string };
+
   sync: GameState;
 };
 

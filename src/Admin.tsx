@@ -50,6 +50,14 @@ export const Admin = () => {
         >
           Reveal Answer
         </button>
+        <button
+          onClick={() => {
+            sendMessage("allowBuzz", { allowed: true });
+          }}
+          className="text-lg border-yellow-100 border w-full py-2 bg-yellow-400 text-black"
+        >
+          Allow Buzz
+        </button>
       </div>
       <div className="py-2"></div>
       <Board />

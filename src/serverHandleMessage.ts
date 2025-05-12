@@ -68,4 +68,25 @@ export const handlers: Partial<HandlersMap> = {
       },
     }));
   },
+
+  allowBuzz: (m, b) => {
+    game.setState((state) => ({
+      allowBuzz: m.allowed,
+    }));
+  },
+
+  buzzIn: (m, b) => {
+    if (!m.teamName) {
+      return;
+    }
+    if (!game.getState().allowBuzz) {
+      return;
+    }
+
+    game.setState({
+      allowBuzz: false,
+    });
+
+    b("buzzAccepted", { teamName: m.teamName }, true);
+  },
 };

@@ -1,8 +1,6 @@
-import { useState } from "react";
 import { useGameState } from "./ClientGameState";
 import { useTeamName } from "./TeamContext";
 import { useSend, useSubscribe } from "./WebSocketContext";
-import { game } from "./state";
 
 const BuzzerCurrentQuestion = () => {
   const state = useGameState();
@@ -19,6 +17,10 @@ export const Buzzer = () => {
   const { sendMessage } = useSend();
   const gameState = useGameState();
   const teamName = useTeamName();
+
+  useSubscribe("buzzAccepted", (data) => {
+    console.log("got buzzAccepted message", data);
+  });
 
   return (
     <div>

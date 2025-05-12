@@ -1,8 +1,7 @@
 import React from "react";
 import type { Question } from "./state";
 import { questions } from "./questions";
-import { useSend, useSubscribe } from "./WebSocketContext";
-import { useNavigate } from "react-router";
+import { useSend } from "./WebSocketContext";
 import { useGameState } from "./ClientGameState";
 
 // Type for the transformed data

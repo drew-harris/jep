@@ -1,16 +1,76 @@
 import indexHtml from "../public/index.html";
 import { serve } from "bun";
+import type { Message, MessageType } from "./types";
+import { handlers } from "./serverHandleMessage";
+
+const wsClients: Bun.ServerWebSocket<unknown>[] = [];
 
 const server = serve({
   websocket: {
+    open(ws) {
+      wsClients.push(ws);
+      console.info(`Client connected`);
+    },
+    close(ws, code, reason) {
+      wsClients.splice(wsClients.indexOf(ws), 1);
+      console.log(`Client disconnected: ${code} ${reason}`);
+    },
     async message(ws, message) {
       console.log(`Received ${message}`);
-      // send back a message
-      ws.send(`You said: ${message}`);
+
+      // Handle message
+      if (typeof message !== "string") {
+        return;
+      }
+      const parsedJson = JSON.parse(message) as Message<any>;
+      console.log("Parsed JSON:", parsedJson);
+
+      const type = parsedJson.type as MessageType;
+
+      // Get handler
+      const handler = handlers[type];
+      if (!handler) {
+        console.warn(`No handler for message type ${type}`);
+        return;
+      }
+
+      // Build broadcast function
+      const broadcast = (
+        type: MessageType,
+        data: Message<MessageType>["data"],
+        inclusive = false,
+      ) => {
+        const messageString = JSON.stringify({
+          type,
+          data,
+        });
+        wsClients.forEach((client) => {
+          if (inclusive || client !== ws) {
+            client.send(messageString);
+          }
+        });
+      };
+
+      // Call handler
+      handler(parsedJson.data, broadcast, ws);
+
+      // Push state eventually?
     },
   },
   routes: {
     "/": indexHtml,
+    "/ws": (req, server) => {
+      const success = server.upgrade(req);
+      if (success) {
+        // Bun automatically returns a 101 Switching Protocols
+        // if the upgrade succeeds
+        return undefined;
+      }
+
+      // handle HTTP request normally
+      return new Response("Hello world!");
+    },
+    "/buzzer": indexHtml,
     "/hello": async () => {},
   },
   port: 3000,

@@ -1,5 +1,6 @@
 import { Board } from "./Board";
 import { useGameState } from "./ClientGameState";
+import { QuestionView } from "./QuestionView";
 import { useSend } from "./WebSocketContext";
 
 const Scores = () => {
@@ -50,16 +51,46 @@ export const Admin = () => {
         >
           Reveal Answer
         </button>
-        <button
-          onClick={() => {
-            sendMessage("allowBuzz", { allowed: true });
-          }}
-          className="text-lg border-yellow-100 border w-full py-2 bg-yellow-400 text-black"
-        >
-          Allow Buzz
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() => {
+              sendMessage("startTimer", { seconds: 20 });
+            }}
+            className="text-lg border-yellow-100 border w-full py-2 bg-yellow-400 text-black"
+          >
+            Start Timer
+          </button>
+          <button
+            onClick={() => {
+              sendMessage("stopTimer", {});
+            }}
+            className="text-lg border-yellow-100 border w-full py-2 bg-yellow-400 text-black"
+          >
+            Stop Timer
+          </button>
+        </div>
+
+        <div className="flex gap-2">
+          <button
+            onClick={() => {
+              sendMessage("allowBuzz", { allowed: true });
+            }}
+            className="text-lg border-yellow-100 border w-full py-2 bg-yellow-400 text-black"
+          >
+            Allow Buzz
+          </button>
+          <button
+            onClick={() => {
+              sendMessage("clearBuzz", {});
+            }}
+            className="text-lg border-yellow-100 border w-full py-2 bg-yellow-500 text-black"
+          >
+            Clear Buzz
+          </button>
+        </div>
       </div>
       <div className="py-2"></div>
+      <QuestionView />
       <Board />
       <Scores />
     </div>

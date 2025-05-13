@@ -69,8 +69,8 @@ export const handlers: Partial<HandlersMap> = {
     }));
   },
 
-  allowBuzz: (m, b) => {
-    game.setState((state) => ({
+  allowBuzz: (m) => {
+    game.setState(() => ({
       allowBuzz: m.allowed,
     }));
   },
@@ -88,5 +88,16 @@ export const handlers: Partial<HandlersMap> = {
     });
 
     b("buzzAccepted", { teamName: m.teamName }, true);
+  },
+
+  startTimer: (m, b) => {
+    b("startTimer", { seconds: m.seconds }, true);
+  },
+  stopTimer: (_, b) => {
+    b("stopTimer", {}, true);
+  },
+  clearBuzz: (_, b) => {
+    game.setState({ allowBuzz: false });
+    b("clearBuzz", {}, true);
   },
 };

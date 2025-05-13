@@ -15,6 +15,10 @@ export type MessageTypes = {
   allowBuzz: { allowed: boolean };
   buzzAccepted: { teamName: string };
   buzzIn: { teamName: string };
+  clearBuzz: {}; // Just clears the buzz in text
+
+  startTimer: { seconds: number };
+  stopTimer: {};
 
   sync: GameState;
 };

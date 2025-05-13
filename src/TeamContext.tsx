@@ -15,11 +15,11 @@ export const TeamContextProvider = ({
 
   const allGood = useMemo(() => {
     if (!team) return false;
-    if (gameState.scores[team] != undefined && team) {
+    if (gameState.scores[team] !== undefined && team) {
       return true;
     }
     return false;
-  }, [gameState, inputTeam]);
+  }, [gameState, team]);
   const { sendMessage } = useSend();
 
   const submit = (name: string) => {
@@ -32,6 +32,7 @@ export const TeamContextProvider = ({
     window.localStorage.setItem("teamname", name);
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const potentialSave = window.localStorage.getItem("teamname");
     if (potentialSave) {
@@ -50,6 +51,7 @@ export const TeamContextProvider = ({
           placeholder="Team Name"
         />
         <button
+          type="button"
           onClick={() => {
             submit(inputTeam);
           }}

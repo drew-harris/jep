@@ -1,5 +1,6 @@
 import { QRCodeSVG } from "qrcode.react";
 import { Link } from "react-router";
+
 export const App = () => {
   return (
     <div className="grid place-items-center min-h-[80vh]">

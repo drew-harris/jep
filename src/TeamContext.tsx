@@ -47,6 +47,7 @@ export const TeamContextProvider = ({
           value={inputTeam}
           onChange={(e) => setInputTeam(e.target.value)}
           className="text-lg border-yellow-100 border w-full py-2 px-2"
+          maxLength={20}
           placeholder="Team Name"
         />
         <button

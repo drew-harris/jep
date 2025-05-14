@@ -150,7 +150,18 @@ const AwardPoints = () => {
             >
               Add {increment}
             </button>
-            <div className="bg-blue-700 text-lg font-bold text-white text-center px-7">
+            <div
+              onClick={() => {
+                const result = confirm("Are you sure?");
+                if (!result) {
+                  return;
+                }
+                sendMessage("removeTeam", {
+                  teamName: team,
+                });
+              }}
+              className="bg-blue-700 text-lg font-bold text-white text-center px-7"
+            >
               {team}: {gameState.scores[team]}
             </div>
             <button

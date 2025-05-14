@@ -141,4 +141,15 @@ export const handlers: Partial<HandlersMap> = {
       showingCode: m.showCode,
     }));
   },
+
+  removeTeam: (m, b) => {
+    // @ts-ignore
+    game.setState((state) => ({
+      ...state,
+      scores: {
+        ...state.scores,
+        [m.teamName]: undefined,
+      },
+    }));
+  },
 };

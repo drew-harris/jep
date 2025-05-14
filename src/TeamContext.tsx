@@ -36,7 +36,6 @@ export const TeamContextProvider = ({
     const potentialSave = window.localStorage.getItem("teamname");
     if (potentialSave) {
       setInputTeam(potentialSave);
-      submit(potentialSave);
     }
   }, []);
 

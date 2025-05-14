@@ -26,6 +26,7 @@ export type MessageTypes = {
   sync: GameState;
 
   setShowCode: { showCode: boolean };
+  removeTeam: { teamName: string };
 };
 
 export type MessageType = keyof MessageTypes;

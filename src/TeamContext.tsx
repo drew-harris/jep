@@ -32,7 +32,6 @@ export const TeamContextProvider = ({
     window.localStorage.setItem("teamname", name);
   };
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const potentialSave = window.localStorage.getItem("teamname");
     if (potentialSave) {

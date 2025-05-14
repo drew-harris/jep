@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useGameState } from "./ClientGameState";
 import { useTeamName } from "./TeamContext";
 import { useSend, useSubscribe } from "./WebSocketContext";
@@ -17,6 +18,15 @@ export const Buzzer = () => {
   const { sendMessage } = useSend();
   const gameState = useGameState();
   const teamName = useTeamName();
+
+  const [buzzerBlocked, setBuzzerBlocked] = useState(false);
+
+  const triggerEarlyBuzz = () => {
+    setBuzzerBlocked(true);
+    setTimeout(() => {
+      setBuzzerBlocked(false);
+    }, 2000);
+  };
 
   useSubscribe("buzzAccepted", (data) => {
     console.log("got buzzAccepted message", data);
@@ -41,11 +51,23 @@ export const Buzzer = () => {
       {gameState.allowBuzz && (
         <div
           onClick={() => {
-            sendMessage("buzzIn", { teamName });
+            if (!buzzerBlocked) {
+              sendMessage("buzzIn", { teamName });
+            }
           }}
           className="rounded-[100%] mx-auto mt-4 grid place-items-center h-[50vw] text-center bg-red-500 w-[50vw]"
         >
           <div className="text-3xl">Buzz</div>
+        </div>
+      )}
+      {!gameState.allowBuzz && (
+        <div
+          onClick={() => {
+            triggerEarlyBuzz();
+          }}
+          className="rounded-[100%] mx-auto mt-4 grid place-items-center h-[50vw] text-center w-[50vw]"
+        >
+          <div className="text-3xl">{buzzerBlocked && "Not Yet"}</div>
         </div>
       )}
     </div>

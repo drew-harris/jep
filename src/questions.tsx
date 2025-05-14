@@ -75,6 +75,14 @@ export const questions: Question[] = [
     questionText: "What is my favorite color? (Double points: explain why)",
   },
   {
+    id: "fav-color",
+    worth: 200,
+    category: "Misc.",
+    answerText: "Ramen Noodles",
+    isAnswered: false,
+    questionText: "What is my favorite night time meal?",
+  },
+  {
     id: "stemify",
     worth: 400,
     category: "Misc.",

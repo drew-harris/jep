@@ -50,8 +50,15 @@ export const Admin = () => {
             sendMessage("unsetQuestion", {});
           }}
           className="text-lg border-yellow-100 border w-full py-4 bg-yellow-400 text-black"
+          style={{
+            opacity: state.currentQuestion
+              ? state.currentQuestion.isAnswered
+                ? 1
+                : 0.5
+              : 0.5,
+          }}
         >
-          Unset Question
+          Back to Question Board
         </button>
         <button
           onClick={() => {
@@ -106,6 +113,7 @@ export const Admin = () => {
       <AwardPoints />
       <div className="h-2"></div>
       <QuestionView />
+      <div className="py-2"></div>
       <Board />
       <Scores />
     </div>

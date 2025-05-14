@@ -4,7 +4,7 @@ import type { Question } from "./state";
 export const questions: Question[] = [
   {
     id: "born",
-    worth: 200,
+    worth: 100,
     category: "Before You Met Me",
     answerText: "Dallas",
     isAnswered: false,
@@ -20,11 +20,19 @@ export const questions: Question[] = [
   },
   {
     id: "dorm",
-    worth: 300,
+    worth: 200,
     category: "Before You Met Me",
     answerText: "Virginia Snider",
     isAnswered: false,
     questionText: "What dorm did I live in?",
+  },
+  {
+    id: "dorm",
+    worth: 300,
+    category: "Before You Met Me",
+    answerText: "Practicing Wheelies",
+    isAnswered: false,
+    questionText: "I spent 6+ hours a day doing this during quarantine",
   },
   {
     id: "sport",
@@ -65,6 +73,15 @@ export const questions: Question[] = [
     answerText: "Blue",
     isAnswered: false,
     questionText: "What is my favorite color? (Double points: explain why)",
+  },
+  {
+    id: "stemify",
+    worth: 400,
+    category: "Misc.",
+    answerText: "Stemify",
+    isAnswered: false,
+    questionText:
+      "My creation of this website lead me to work for disgraced neo-nazi Kanye West the summer after freshman year.",
   },
 
   // Employment

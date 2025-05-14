@@ -11,14 +11,16 @@ type CategoryMap = {
 
 // Function to group questions by category
 const groupQuestionsByCategory = (questions: Question[]): CategoryMap => {
-  return questions.reduce((acc: CategoryMap, question: Question) => {
-    const { category } = question;
-    if (!acc[category]) {
-      acc[category] = [];
-    }
-    acc[category].push(question);
-    return acc;
-  }, {});
+  return questions
+    .sort((a, b) => a.worth - b.worth)
+    .reduce((acc: CategoryMap, question: Question) => {
+      const { category } = question;
+      if (!acc[category]) {
+        acc[category] = [];
+      }
+      acc[category].push(question);
+      return acc;
+    }, {});
 };
 
 // QuestionCell Component

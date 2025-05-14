@@ -92,6 +92,7 @@ const server = serve({
     "/hello": async () => {},
   },
   port: 3000,
+  development: process.env.NODE_ENV !== "production",
 });
 
 console.log("Server started on port 3000");

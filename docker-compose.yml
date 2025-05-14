@@ -1,0 +1,5 @@
+services:
+  jep:
+    build: .
+    ports:
+      - "3000:3000"

@@ -1,13 +1,12 @@
 import { Board } from "./Board";
 import { useGameState } from "./ClientGameState";
 import { QuestionView } from "./QuestionView";
-import { game } from "./state";
 import { useSend } from "./WebSocketContext";
 
 const Scores = () => {
   const state = useGameState();
   return (
-    <div className="flex flex-col py-2 gap-2 justify-evenly">
+    <div className="flex flex-col py-4 gap-2 justify-evenly">
       {Object.entries(state.scores).map((e) => {
         return (
           <div>
@@ -50,7 +49,7 @@ export const Admin = () => {
           onClick={() => {
             sendMessage("unsetQuestion", {});
           }}
-          className="text-lg border-yellow-100 border w-full py-2 bg-yellow-400 text-black"
+          className="text-lg border-yellow-100 border w-full py-4 bg-yellow-400 text-black"
         >
           Unset Question
         </button>
@@ -58,16 +57,16 @@ export const Admin = () => {
           onClick={() => {
             sendMessage("revealAnswer", {});
           }}
-          className="text-lg border-yellow-100 border w-full py-2 bg-yellow-400 text-black"
+          className="text-lg border-yellow-100 border w-full py-4 bg-yellow-400 text-black"
         >
           Reveal Answer
         </button>
         <div className="flex gap-2">
           <button
             onClick={() => {
-              sendMessage("startTimer", { seconds: 20 });
+              sendMessage("startTimer", { seconds: 10 });
             }}
-            className="text-lg border-yellow-100 border w-full py-2 bg-yellow-400 text-black"
+            className="text-lg border-yellow-100 border w-full py-4 bg-yellow-400 text-black"
           >
             Start Timer
           </button>
@@ -75,32 +74,35 @@ export const Admin = () => {
             onClick={() => {
               sendMessage("stopTimer", {});
             }}
-            className="text-lg border-yellow-100 border w-full py-2 bg-yellow-400 text-black"
+            className="text-lg border-yellow-100 border w-full py-4 bg-yellow-400 text-black"
           >
             Stop Timer
           </button>
         </div>
 
         <div className="flex gap-2">
-          <button
-            onClick={() => {
-              sendMessage("allowBuzz", { allowed: true });
-            }}
-            className="text-lg border-yellow-100 border w-full py-2 bg-yellow-400 text-black"
-          >
-            Allow Buzz
-          </button>
-          <button
-            onClick={() => {
-              sendMessage("clearBuzz", {});
-            }}
-            className="text-lg border-yellow-100 border w-full py-2 bg-yellow-500 text-black"
-          >
-            Clear Buzz
-          </button>
+          {state.allowBuzz ? (
+            <button
+              onClick={() => {
+                sendMessage("clearBuzz", {});
+              }}
+              className="text-lg border-yellow-100 border w-full py-4 bg-orange-500 text-black"
+            >
+              Clear Buzz
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                sendMessage("allowBuzz", { allowed: true });
+              }}
+              className="text-lg border-yellow-100 border w-full py-4 bg-yellow-400 text-black"
+            >
+              Allow Buzz
+            </button>
+          )}
         </div>
       </div>
-      <div className="py-2"></div>
+      <div className="py-4"></div>
       <AwardPoints />
       <div className="h-2"></div>
       <QuestionView />
@@ -136,7 +138,7 @@ const AwardPoints = () => {
                   ? "#ccc"
                   : undefined,
               }}
-              className="text-lg border-yellow-100 border w-full py-2 bg-yellow-400 text-black"
+              className="text-lg border-yellow-100 border w-full py-4 bg-yellow-400 text-black"
             >
               Add {increment}
             </button>
@@ -155,7 +157,7 @@ const AwardPoints = () => {
                   amount: increment,
                 });
               }}
-              className="text-lg border-yellow-100 border w-full py-2 bg-yellow-400 text-black"
+              className="text-lg border-yellow-100 border w-full py-4 bg-yellow-400 text-black"
             >
               Subtract {increment}
             </button>

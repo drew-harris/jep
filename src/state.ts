@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export type Category = "Early Life" | "Music";
+export type Category = "Before You Met Me" | "Music" | "Resume" | "Misc.";
 
 export type Question = {
   id: string;

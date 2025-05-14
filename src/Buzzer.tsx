@@ -24,7 +24,7 @@ export const Buzzer = () => {
     // and red if another team got it
     const currentColor = document.body.style.backgroundColor;
     if (data.teamName === teamName) {
-      document.body.style.backgroundColor = "#00cc00";
+      document.body.style.backgroundColor = "#00cd00";
     } else {
       document.body.style.backgroundColor = "#cc0000";
     }

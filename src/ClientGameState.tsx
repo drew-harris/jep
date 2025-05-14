@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { createContext, useContext, useState } from "react";
 import type { GameState } from "./state";
 import { useSubscribe } from "./WebSocketContext";
-import React from "react";
 
-const GameStateContext = React.createContext<GameState | null>(null);
+const GameStateContext = createContext<GameState | null>(null);
 
 export const ClientGameStateProvider = ({
   children,
@@ -29,7 +28,7 @@ export const ClientGameStateProvider = ({
 };
 
 export const useGameState = () => {
-  const context = React.useContext(GameStateContext);
+  const context = useContext(GameStateContext);
   if (!context) {
     throw new Error(
       "useGameState must be used within a ClientGameStateProvider",

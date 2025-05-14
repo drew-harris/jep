@@ -4,9 +4,6 @@ import { useSubscribe } from "./WebSocketContext";
 
 export const QuestionView = () => {
   const { currentQuestion } = useGameState();
-  if (!currentQuestion) {
-    return null;
-  }
 
   const [secondsRemaining, setSecondsRemaining] = useState<number | null>(null);
   const [timers, setTimers] = useState<number[]>([]);
@@ -45,6 +42,10 @@ export const QuestionView = () => {
   useSubscribe("clearBuzz", () => {
     setBuzzText("");
   });
+
+  if (!currentQuestion) {
+    return null;
+  }
 
   return (
     <div>

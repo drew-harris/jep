@@ -20,6 +20,17 @@ export const Buzzer = () => {
 
   useSubscribe("buzzAccepted", (data) => {
     console.log("got buzzAccepted message", data);
+    // Set background to green and back quickly if buzz accepted
+    // and red if another team got it
+    const currentColor = document.body.style.backgroundColor;
+    if (data.teamName === teamName) {
+      document.body.style.backgroundColor = "#00cc00";
+    } else {
+      document.body.style.backgroundColor = "#cc0000";
+    }
+    setTimeout(() => {
+      document.body.style.backgroundColor = currentColor;
+    }, 500);
   });
 
   return (

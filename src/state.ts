@@ -17,6 +17,7 @@ export type GameState = {
   count: number;
   playedQuestions: string[];
   allowBuzz: boolean;
+  showingCode: boolean;
 };
 
 const initialState: GameState = {
@@ -25,6 +26,7 @@ const initialState: GameState = {
   playedQuestions: [],
   count: 0,
   allowBuzz: false,
+  showingCode: false,
 };
 
 export const game = create<GameState>(() => ({

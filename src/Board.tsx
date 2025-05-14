@@ -100,7 +100,7 @@ export const Board: React.FC = () => {
   };
 
   return (
-    <div style={{ display: "flex" }}>
+    <div className="w-full flex justify-center">
       {Object.entries(groupedQuestions).map(([category, questions]) => (
         <CategoryColumn
           key={category}

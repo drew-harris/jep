@@ -100,4 +100,45 @@ export const handlers: Partial<HandlersMap> = {
     game.setState({ allowBuzz: false });
     b("clearBuzz", {}, true);
   },
+
+  awardPoints: (m, b) => {
+    game.setState((state) => {
+      if (state.scores[m.teamName] === undefined) {
+        return state;
+      }
+      const newScore = state.scores[m.teamName]! + m.amount;
+      return {
+        ...state,
+        scores: {
+          ...state.scores,
+          [m.teamName]: newScore,
+        },
+      };
+    });
+    b("awardPoints", { teamName: m.teamName, amount: m.amount }, true);
+  },
+
+  deductPoints: (m, b) => {
+    game.setState((state) => {
+      if (state.scores[m.teamName] === undefined) {
+        return state;
+      }
+      const newScore = state.scores[m.teamName]! - m.amount;
+      return {
+        ...state,
+        scores: {
+          ...state.scores,
+          [m.teamName]: newScore,
+        },
+      };
+    });
+    b("deductPoints", { teamName: m.teamName, amount: m.amount }, true);
+  },
+
+  setShowCode: (m, b) => {
+    game.setState((state) => ({
+      ...state,
+      showingCode: m.showCode,
+    }));
+  },
 };

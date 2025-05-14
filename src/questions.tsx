@@ -18,4 +18,12 @@ export const questions: Question[] = [
     isAnswered: false,
     questionText: "Who is my favorite music artist?",
   },
+  {
+    id: "fav-color",
+    worth: 300,
+    category: "Music",
+    answerText: "Blue",
+    isAnswered: false,
+    questionText: "What is my favorite color?",
+  },
 ];

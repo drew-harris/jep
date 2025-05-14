@@ -20,7 +20,12 @@ export type MessageTypes = {
   startTimer: { seconds: number };
   stopTimer: {};
 
+  awardPoints: { teamName: string; amount: number };
+  deductPoints: { teamName: string; amount: number };
+
   sync: GameState;
+
+  setShowCode: { showCode: boolean };
 };
 
 export type MessageType = keyof MessageTypes;
